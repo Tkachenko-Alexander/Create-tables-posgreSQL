@@ -1,0 +1,141 @@
+-- Table: public.t_genre
+
+-- DROP TABLE IF EXISTS public.t_genre;
+
+CREATE TABLE IF NOT EXISTS public.t_genre
+(
+    id_movies bigint,
+    id smallint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 32767 CACHE 1 ),
+    genre_name character(1) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT t_genre_pkey PRIMARY KEY (id, genre_name),
+    CONSTRAINT movie_gnr_fk FOREIGN KEY (id_movies)
+        REFERENCES public.t_movies (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.t_genre
+    OWNER to postgres;
+
+-- Table: public.t_movies
+
+-- DROP TABLE IF EXISTS public.t_movies;
+
+CREATE TABLE IF NOT EXISTS public.t_movies
+(
+    id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 10 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1 ),
+    movie_name text COLLATE pg_catalog."default" NOT NULL,
+    year_production date,
+    age smallint,
+    "Tagline" text COLLATE pg_catalog."default",
+    budget bigint,
+    marketing bigint,
+    "fees_US" bigint,
+    fees_world bigint,
+    "Premiere_Russia" date,
+    "Premiere_World" date,
+    "DVD_release" date,
+    "MPAA_rating" "char",
+    time_movie time without time zone,
+    picture text COLLATE pg_catalog."default",
+    video text COLLATE pg_catalog."default",
+    CONSTRAINT t_movies_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.t_movies
+    OWNER to postgres;
+
+-- Table: public.t_organazers
+
+-- DROP TABLE IF EXISTS public.t_organazers;
+
+CREATE TABLE IF NOT EXISTS public.t_organazers
+(
+    movies_id bigint,
+    id smallint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 32767 CACHE 1 ),
+    name character(1) COLLATE pg_catalog."default" NOT NULL,
+    surname character(1) COLLATE pg_catalog."default" NOT NULL,
+    status character(1) COLLATE pg_catalog."default",
+    CONSTRAINT movie_org_fkey FOREIGN KEY (movies_id)
+        REFERENCES public.t_movies (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.t_organazers
+    OWNER to postgres;
+
+
+-- Table: public.t_person
+
+-- DROP TABLE IF EXISTS public.t_person;
+
+CREATE TABLE IF NOT EXISTS public.t_person
+(
+    movies_id bigint,
+    id smallint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 32767 CACHE 1 ),
+    name character(1) COLLATE pg_catalog."default" NOT NULL,
+    surname character(1) COLLATE pg_catalog."default" NOT NULL,
+    status character(1) COLLATE pg_catalog."default",
+    CONSTRAINT movei_fk FOREIGN KEY (movies_id)
+        REFERENCES public.t_movies (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.t_person
+    OWNER to postgres;
+
+-- Table: public.t_spectator
+
+-- DROP TABLE IF EXISTS public.t_spectator;
+
+CREATE TABLE IF NOT EXISTS public.t_spectator
+(
+    movies_id bigint,
+    id smallint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 32767 CACHE 1 ),
+    country "char" NOT NULL,
+    spectators_count integer,
+    CONSTRAINT movie_spc_fkey FOREIGN KEY (movies_id)
+        REFERENCES public.t_movies (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.t_spectator
+    OWNER to postgres;
+
+-- Table: public.t_where_see
+
+-- DROP TABLE IF EXISTS public.t_where_see;
+
+CREATE TABLE IF NOT EXISTS public.t_where_see
+(
+    movies_id bigint,
+    id smallint NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 32767 CACHE 1 ),
+    resoures_name "char" NOT NULL,
+    CONSTRAINT movie_whsee_fk FOREIGN KEY (movies_id)
+        REFERENCES public.t_movies (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.t_where_see
+    OWNER to postgres;
